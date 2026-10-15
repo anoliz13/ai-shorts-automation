@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - AI Shorts Automation</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="logo">AI Shorts</div>
+            <nav>
+                <a href="/">Dashboard</a>
+                <a href="/channels.html">Channels</a>
+                <a href="/videos.html">Videos</a>
+                <a href="/shorts.html">Shorts</a>
+                <a href="/uploads.html">Uploads</a>
+                <a href="/settings.html" class="active">Settings</a>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <h1 style="margin-bottom: 24px;">Settings</h1>
+
+            <div class="card">
+                <h3>Schedule</h3>
+                <form onsubmit="saveSettings(event)">
+                    <div class="form-group">
+                        <label>Check Hour (0-23)</label>
+                        <input type="number" id="check_hour" min="0" max="23" value="20">
+                    </div>
+                    <div class="form-group">
+                        <label>Check Minute (0-59)</label>
+                        <input type="number" id="check_minute" min="0" max="59" value="0">
+                    </div>
+                    <h3 style="margin-top: 20px;">Anti-Spam Limits</h3>
+                    <div class="form-group">
+                        <label>Max Shorts per Video</label>
+                        <input type="number" id="max_shorts_per_video" min="1" max="10" value="5">
+                    </div>
+                    <div class="form-group">
+                        <label>Max TikTok Uploads/Day</label>
+                        <input type="number" id="max_uploads_per_day_tiktok" min="1" max="20" value="5">
+                    </div>
+                    <div class="form-group">
+                        <label>Max YouTube Uploads/Day</label>
+                        <input type="number" id="max_uploads_per_day_youtube" min="1" max="20" value="5">
+                    </div>
+                    <div class="form-group">
+                        <label>Min Gap Between Uploads (minutes)</label>
+                        <input type="number" id="min_gap_minutes" min="5" max="120" value="30">
+                    </div>
+                    <h3 style="margin-top: 20px;">Generation</h3>
+                    <div class="form-group">
+                        <label>Shorts Mode</label>
+                        <select id="shorts_mode">
+                            <option value="api">API (MuAPI - fast, requires key)</option>
+                            <option value="local">Local (offline, requires ffmpeg)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Settings</button>
+                </form>
+            </div>
+        </main>
+    </div>
+    <script src="/js/app.js"></script>
+    <script>
+        async function loadSettings() {
+            const settings = await apiFetch('/api/settings');
+            if (Object.keys(settings).length > 0) {
+                document.getElementById('check_hour').value = settings.check_hour || 20;
+                document.getElementById('check_minute').value = settings.check_minute || 0;
+                document.getElementById('max_shorts_per_video').value = settings.max_shorts_per_video || 5;
+                document.getElementById('max_uploads_per_day_tiktok').value = settings.max_uploads_per_day_tiktok || 5;
+                document.getElementById('max_uploads_per_day_youtube').value = settings.max_uploads_per_day_youtube || 5;
+                document.getElementById('min_gap_minutes').value = settings.min_gap_minutes || 30;
+                document.getElementById('shorts_mode').value = settings.shorts_mode || 'api';
+            }
+        }
+
+        async function saveSettings(e) {
+            e.preventDefault();
+            const body = {
+                check_hour: parseInt(document.getElementById('check_hour').value),
+                check_minute: parseInt(document.getElementById('check_minute').value),
+                max_shorts_per_video: parseInt(document.getElementById('max_shorts_per_video').value),
+                max_uploads_per_day_tiktok: parseInt(document.getElementById('max_uploads_per_day_tiktok').value),
+                max_uploads_per_day_youtube: parseInt(document.getElementById('max_uploads_per_day_youtube').value),
+                min_gap_minutes: parseInt(document.getElementById('min_gap_minutes').value),
+                shorts_mode: document.getElementById('shorts_mode').value,
+            };
+            await apiFetch('/api/settings', {
+                method: 'PUT',
+                body: JSON.stringify(body)
+            });
+            showToast('Settings saved');
+        }
+
+        loadSettings();
+    </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uploads - AI Shorts Automation</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="logo">AI Shorts</div>
+            <nav>
+                <a href="/">Dashboard</a>
+                <a href="/channels.html">Channels</a>
+                <a href="/videos.html">Videos</a>
+                <a href="/shorts.html">Shorts</a>
+                <a href="/uploads.html" class="active">Uploads</a>
+                <a href="/settings.html">Settings</a>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <h1 style="margin-bottom: 24px;">Uploads</h1>
+
+            <div class="card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Short</th>
+                            <th>Platform</th>
+                            <th>Status</th>
+                            <th>Uploaded At</th>
+                            <th>Error</th>
+                        </tr>
+                    </thead>
+                    <tbody id="uploads-tbody">
+                        <tr><td colspan="5" style="text-align:center;color:var(--text-muted);">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    <script src="/js/app.js"></script>
+    <script>
+        async function loadUploads() {
+            const uploads = await apiFetch('/api/uploads');
+            const tbody = document.getElementById('uploads-tbody');
+            if (uploads.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);">No uploads yet</td></tr>';
+                return;
+            }
+            tbody.innerHTML = uploads.map(u => `
+                <tr>
+                    <td>${u.short_title || 'Untitled'}</td>
+                    <td><strong>${u.platform}</strong></td>
+                    <td>${statusBadge(u.status)}</td>
+                    <td>${formatDate(u.uploaded_at)}</td>
+                    <td style="color:var(--danger); font-size:12px;">${u.error_message || '—'}</td>
+                </tr>
+            `).join('');
+        }
+
+        loadUploads();
+    </script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - AI Shorts Automation</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="logo">AI Shorts</div>
+            <nav>
+                <a href="/" class="active">Dashboard</a>
+                <a href="/channels.html">Channels</a>
+                <a href="/videos.html">Videos</a>
+                <a href="/shorts.html">Shorts</a>
+                <a href="/uploads.html">Uploads</a>
+                <a href="/settings.html">Settings</a>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <h1 style="margin-bottom: 24px;">Dashboard</h1>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="value" id="stat-channels">—</div>
+                    <div class="label">Channels</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value" id="stat-videos">—</div>
+                    <div class="label">Videos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value" id="stat-shorts">—</div>
+                    <div class="label">Shorts Generated</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value" id="stat-uploads">—</div>
+                    <div class="label">Uploads Today</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Upload Usage Today</h3>
+                <div id="daily-usage">
+                    <p style="color: var(--text-muted);">Loading...</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Actions</h3>
+                <button class="btn btn-primary" onclick="runPipelineNow()">Run Pipeline Now</button>
+                <button class="btn btn-secondary" onclick="loadDashboard()">Refresh</button>
+            </div>
+
+            <div class="card">
+                <h3>System Status</h3>
+                <p><strong>Last Check:</strong> <span id="last-check">—</span></p>
+                <p><strong>Scheduler:</strong> <span id="scheduler-status" class="badge badge-gray">Unknown</span></p>
+            </div>
+        </main>
+    </div>
+    <script src="/js/app.js"></script>
+    <script>
+        async function loadDashboard() {
+            const stats = await apiFetch('/api/dashboard');
+            document.getElementById('stat-channels').textContent = stats.total_channels;
+            document.getElementById('stat-videos').textContent = stats.total_videos;
+            document.getElementById('stat-shorts').textContent = stats.total_shorts;
+            document.getElementById('stat-uploads').textContent = stats.uploads_today;
+            document.getElementById('last-check').textContent = formatDate(stats.last_check);
+
+            // Load daily usage
+            const usage = await apiFetch('/api/uploads/daily-usage');
+            const container = document.getElementById('daily-usage');
+            let html = '';
+            for (const [platform, data] of Object.entries(usage)) {
+                const pct = data.limit > 0 ? (data.used / data.limit) * 100 : 0;
+                html += `<p style="margin-bottom: 8px;"><strong>${platform}</strong>: ${data.used}/${data.limit}</p>
+                         <div class="progress-bar"><div class="fill" style="width: ${pct}%"></div></div>`;
+            }
+            container.innerHTML = html || '<p style="color: var(--text-muted);">No uploads today</p>';
+        }
+
+        async function runPipelineNow() {
+            try {
+                const result = await apiFetch('/api/pipeline/run-now', { method: 'POST' });
+                showToast(`Pipeline complete: ${result.monitor.new_videos} new videos, ${result.generator.shorts_generated} shorts, ${result.uploader.uploaded} uploads`);
+                loadDashboard();
+            } catch (e) {
+                showToast('Pipeline failed: ' + e.message, 'error');
+            }
+        }
+
+        loadDashboard();
+    </script>
+</body>
+</html>

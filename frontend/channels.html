@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Channels - AI Shorts Automation</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="logo">AI Shorts</div>
+            <nav>
+                <a href="/">Dashboard</a>
+                <a href="/channels.html" class="active">Channels</a>
+                <a href="/videos.html">Videos</a>
+                <a href="/shorts.html">Shorts</a>
+                <a href="/uploads.html">Uploads</a>
+                <a href="/settings.html">Settings</a>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <h1 style="margin-bottom: 24px;">Channels</h1>
+
+            <div class="card">
+                <h3>Add Channel</h3>
+                <form id="add-channel-form" onsubmit="addChannel(event)">
+                    <div class="form-group">
+                        <label>Channel URL</label>
+                        <input type="url" id="channel-url" placeholder="https://www.youtube.com/@channelname" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Channel Name (optional)</label>
+                        <input type="text" id="channel-name" placeholder="My Channel">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Channel</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3>Monitored Channels</h3>
+                <table id="channels-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>URL</th>
+                            <th>Last Checked</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="channels-tbody">
+                        <tr><td colspan="5" style="text-align:center;color:var(--text-muted);">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    <script src="/js/app.js"></script>
+    <script>
+        async function loadChannels() {
+            const channels = await apiFetch('/api/channels');
+            const tbody = document.getElementById('channels-tbody');
+            if (channels.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);">No channels added yet</td></tr>';
+                return;
+            }
+            tbody.innerHTML = channels.map(c => `
+                <tr>
+                    <td>${c.channel_name || '—'}</td>
+                    <td><a href="${c.channel_url}" target="_blank" style="color:var(--accent);">${c.channel_url.substring(0, 40)}...</a></td>
+                    <td>${formatDate(c.last_checked)}</td>
+                    <td>${c.check_enabled ? '<span class="badge badge-green">Active</span>' : '<span class="badge badge-gray">Paused</span>'}</td>
+                    <td>
+                        <button class="btn btn-sm btn-secondary" onclick="toggleChannel(${c.id}, ${!c.check_enabled})">${c.check_enabled ? 'Pause' : 'Resume'}</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteChannel(${c.id})">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function addChannel(e) {
+            e.preventDefault();
+            const url = document.getElementById('channel-url').value;
+            const name = document.getElementById('channel-name').value;
+            try {
+                await apiFetch('/api/channels', {
+                    method: 'POST',
+                    body: JSON.stringify({ channel_url: url, channel_name: name || null })
+                });
+                showToast('Channel added');
+                loadChannels();
+                document.getElementById('add-channel-form').reset();
+            } catch (e) {
+                showToast('Failed: ' + e.message, 'error');
+            }
+        }
+
+        async function toggleChannel(id, enabled) {
+            await apiFetch(`/api/channels/${id}`, {
+                method: 'PATCH',
+                body: JSON.stringify({ check_enabled: enabled })
+            });
+            loadChannels();
+        }
+
+        async function deleteChannel(id) {
+            if (!confirm('Delete this channel?')) return;
+            await apiFetch(`/api/channels/${id}`, { method: 'DELETE' });
+            showToast('Channel deleted');
+            loadChannels();
+        }
+
+        loadChannels();
+    </script>
+</body>
+</html>

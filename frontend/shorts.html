@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shorts - AI Shorts Automation</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="logo">AI Shorts</div>
+            <nav>
+                <a href="/">Dashboard</a>
+                <a href="/channels.html">Channels</a>
+                <a href="/videos.html">Videos</a>
+                <a href="/shorts.html" class="active">Shorts</a>
+                <a href="/uploads.html">Uploads</a>
+                <a href="/settings.html">Settings</a>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <h1 style="margin-bottom: 24px;">Shorts</h1>
+
+            <div class="card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Score</th>
+                            <th>Source Video</th>
+                            <th>Hook</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="shorts-tbody">
+                        <tr><td colspan="6" style="text-align:center;color:var(--text-muted);">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    <script src="/js/app.js"></script>
+    <script>
+        async function loadShorts() {
+            const shorts = await apiFetch('/api/shorts');
+            const tbody = document.getElementById('shorts-tbody');
+            if (shorts.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-muted);">No shorts generated yet</td></tr>';
+                return;
+            }
+            tbody.innerHTML = shorts.map(s => `
+                <tr>
+                    <td>${s.title || 'Untitled'}</td>
+                    <td>${scoreBadge(s.score)}</td>
+                    <td>${s.video_title || '—'}</td>
+                    <td style="max-width:200px; font-size:12px; color:var(--text-muted);">${s.hook_sentence || '—'}</td>
+                    <td>${statusBadge(s.status)}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" onclick="uploadShort(${s.id})">Upload</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function uploadShort(id) {
+            try {
+                await apiFetch(`/api/shorts/${id}/upload`, { method: 'POST' });
+                showToast('Upload triggered');
+                loadShorts();
+            } catch (e) {
+                showToast('Upload failed: ' + e.message, 'error');
+            }
+        }
+
+        loadShorts();
+    </script>
+</body>
+</html>

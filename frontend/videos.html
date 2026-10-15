@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Videos - AI Shorts Automation</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="logo">AI Shorts</div>
+            <nav>
+                <a href="/">Dashboard</a>
+                <a href="/channels.html">Channels</a>
+                <a href="/videos.html" class="active">Videos</a>
+                <a href="/shorts.html">Shorts</a>
+                <a href="/uploads.html">Uploads</a>
+                <a href="/settings.html">Settings</a>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <h1 style="margin-bottom: 24px;">Videos</h1>
+
+            <div class="card">
+                <div style="display:flex; gap:8px; margin-bottom:16px;">
+                    <button class="btn btn-sm btn-secondary" onclick="loadVideos('')">All</button>
+                    <button class="btn btn-sm btn-secondary" onclick="loadVideos('pending')">Pending</button>
+                    <button class="btn btn-sm btn-secondary" onclick="loadVideos('done')">Done</button>
+                    <button class="btn btn-sm btn-secondary" onclick="loadVideos('failed')">Failed</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Status</th>
+                            <th>Shorts</th>
+                            <th>Published</th>
+                            <th>Processed</th>
+                        </tr>
+                    </thead>
+                    <tbody id="videos-tbody">
+                        <tr><td colspan="5" style="text-align:center;color:var(--text-muted);">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    <script src="/js/app.js"></script>
+    <script>
+        let currentFilter = '';
+
+        async function loadVideos(status) {
+            currentFilter = status;
+            const url = status ? `/api/videos?status=${status}` : '/api/videos';
+            const videos = await apiFetch(url);
+            const tbody = document.getElementById('videos-tbody');
+            if (videos.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);">No videos found</td></tr>';
+                return;
+            }
+            tbody.innerHTML = videos.map(v => `
+                <tr>
+                    <td><a href="${v.video_url}" target="_blank" style="color:var(--accent);">${v.video_title || 'Untitled'}</a></td>
+                    <td>${statusBadge(v.status)}</td>
+                    <td>${v.shorts_count}</td>
+                    <td>${formatDate(v.published_at)}</td>
+                    <td>${formatDate(v.processed_at)}</td>
+                </tr>
+            `).join('');
+        }
+
+        loadVideos('');
+    </script>
+</body>
+</html>
