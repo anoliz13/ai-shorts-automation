@@ -183,7 +183,7 @@
 
 - [x] **Step 1: Write README.md** ✅
 - [x] **Step 2: Write setup scripts** ✅
-- [ ] **Step 3: Git init + push to GitHub** ⏳
+- [x] **Step 3: Git init + push to GitHub** ✅
 
 ---
 
