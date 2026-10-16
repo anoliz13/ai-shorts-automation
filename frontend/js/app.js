@@ -1,12 +1,8 @@
-// Shared utility functions
-
 async function apiFetch(url, options = {}) {
-    const response = await fetch(url, {
-        headers: { 'Content-Type': 'application/json' },
-        ...options,
-    });
+    const response = await fetch(url, { headers: { 'Content-Type': 'application/json' }, ...options });
     if (!response.ok) {
-        throw new Error(`API error: ${response.status}`);
+        const text = await response.text().catch(() => '');
+        throw new Error(`API ${response.status}: ${text.substring(0, 120)}`);
     }
     return response.json();
 }
@@ -16,30 +12,11 @@ function showToast(message, type = 'success') {
     toast.className = `toast toast-${type}`;
     toast.textContent = message;
     document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 3000);
+    setTimeout(() => toast.remove(), 4000);
 }
 
-function formatDate(dateStr) {
-    if (!dateStr) return '—';
-    return new Date(dateStr).toLocaleString();
-}
-
-function statusBadge(status) {
-    const map = {
-        'done': 'badge-green',
-        'pending': 'badge-yellow',
-        'processing': 'badge-blue',
-        'failed': 'badge-red',
-        'uploaded': 'badge-green',
-        'uploading': 'badge-blue',
-        'skipped': 'badge-gray',
-    };
-    const cls = map[status] || 'badge-gray';
-    return `<span class="badge ${cls}">${status}</span>`;
-}
-
-function scoreBadge(score) {
-    if (score >= 80) return `<span class="badge badge-green">${score}</span>`;
-    if (score >= 60) return `<span class="badge badge-yellow">${score}</span>`;
-    return `<span class="badge badge-gray">${score}</span>`;
+function formatDate(value) {
+    if (!value) return '—';
+    const d = new Date(value);
+    return isNaN(d) ? value : d.toLocaleString();
 }

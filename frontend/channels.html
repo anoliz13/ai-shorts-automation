@@ -3,28 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Channels - AI Shorts Automation</title>
+    <title>Channels — AI Shorts Automation</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <div class="layout">
         <aside class="sidebar">
-            <div class="logo">AI Shorts</div>
+            <div class="logo">AI<span>Shorts</span></div>
             <nav>
-                <a href="/">Dashboard</a>
-                <a href="/channels.html" class="active">Channels</a>
-                <a href="/videos.html">Videos</a>
-                <a href="/shorts.html">Shorts</a>
-                <a href="/uploads.html">Uploads</a>
-                <a href="/settings.html">Settings</a>
+                <a href="/"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>Dashboard</a>
+                <a href="/channels.html" class="active"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>Channels</a>
+                <a href="/videos.html"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>Videos</a>
+                <a href="/shorts.html"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>Shorts</a>
+                <a href="/uploads.html"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>Uploads</a>
+                <a href="/providers.html"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Providers</a>
+                <a href="/settings.html"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>Settings</a>
             </nav>
         </aside>
         <main class="main-content">
-            <h1 style="margin-bottom: 24px;">Channels</h1>
-
+            <h1>Channels</h1>
             <div class="card">
                 <h3>Add Channel</h3>
-                <form id="add-channel-form" onsubmit="addChannel(event)">
+                <form onsubmit="addChannel(event)">
                     <div class="form-group">
                         <label>Channel URL</label>
                         <input type="url" id="channel-url" placeholder="https://www.youtube.com/@channelname" required>
@@ -36,23 +36,16 @@
                     <button type="submit" class="btn btn-primary">Add Channel</button>
                 </form>
             </div>
-
             <div class="card">
                 <h3>Monitored Channels</h3>
-                <table id="channels-table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>URL</th>
-                            <th>Last Checked</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="channels-tbody">
-                        <tr><td colspan="5" style="text-align:center;color:var(--text-muted);">Loading...</td></tr>
-                    </tbody>
-                </table>
+                <div class="table-container">
+                    <table>
+                        <thead><tr><th>Name</th><th>URL</th><th>Last Checked</th><th>Status</th><th>Actions</th></tr></thead>
+                        <tbody id="channels-tbody">
+                            <tr><td colspan="5" style="text-align:center;color:var(--text-muted);">No channels added yet</td></tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </main>
     </div>
@@ -61,56 +54,33 @@
         async function loadChannels() {
             const channels = await apiFetch('/api/channels');
             const tbody = document.getElementById('channels-tbody');
-            if (channels.length === 0) {
+            if (!channels.length) {
                 tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);">No channels added yet</td></tr>';
                 return;
             }
             tbody.innerHTML = channels.map(c => `
                 <tr>
-                    <td>${c.channel_name || '—'}</td>
-                    <td><a href="${c.channel_url}" target="_blank" style="color:var(--accent);">${c.channel_url.substring(0, 40)}...</a></td>
+                    <td style="color:var(--text-primary);font-weight:500;">${c.channel_name || '—'}</td>
+                    <td><a href="${c.channel_url}" target="_blank" style="color:var(--accent);text-decoration:none;">${c.channel_url.replace('https://','').substring(0,35)}...</a></td>
                     <td>${formatDate(c.last_checked)}</td>
-                    <td>${c.check_enabled ? '<span class="badge badge-green">Active</span>' : '<span class="badge badge-gray">Paused</span>'}</td>
+                    <td>${c.check_active ? '<span class="badge badge-green"><span class="dot"></span>Active</span>' : '<span class="badge badge-gray"><span class="dot"></span>Paused</span>'}</td>
                     <td>
-                        <button class="btn btn-sm btn-secondary" onclick="toggleChannel(${c.id}, ${!c.check_enabled})">${c.check_enabled ? 'Pause' : 'Resume'}</button>
+                        <button class="btn btn-sm btn-ghost" onclick="toggleChannel(${c.id}, ${!c.check_active})">${c.check_active ? 'Pause' : 'Resume'}</button>
                         <button class="btn btn-sm btn-danger" onclick="deleteChannel(${c.id})">Delete</button>
                     </td>
                 </tr>
             `).join('');
         }
-
         async function addChannel(e) {
             e.preventDefault();
-            const url = document.getElementById('channel-url').value;
-            const name = document.getElementById('channel-name').value;
             try {
-                await apiFetch('/api/channels', {
-                    method: 'POST',
-                    body: JSON.stringify({ channel_url: url, channel_name: name || null })
-                });
+                await apiFetch('/api/channels', { method: 'POST', body: JSON.stringify({ channel_url: document.getElementById('channel-url').value, channel_name: document.getElementById('channel-name').value || null }) });
                 showToast('Channel added');
-                loadChannels();
-                document.getElementById('add-channel-form').reset();
-            } catch (e) {
-                showToast('Failed: ' + e.message, 'error');
-            }
+                loadChannels(); e.target.reset();
+            } catch(e) { showToast('Failed: ' + e.message, 'error'); }
         }
-
-        async function toggleChannel(id, enabled) {
-            await apiFetch(`/api/channels/${id}`, {
-                method: 'PATCH',
-                body: JSON.stringify({ check_enabled: enabled })
-            });
-            loadChannels();
-        }
-
-        async function deleteChannel(id) {
-            if (!confirm('Delete this channel?')) return;
-            await apiFetch(`/api/channels/${id}`, { method: 'DELETE' });
-            showToast('Channel deleted');
-            loadChannels();
-        }
-
+        async function toggleChannel(id, enabled) { await apiFetch(`/api/channels/${id}`, { method: 'PATCH', body: JSON.stringify({ check_active: enabled }) }); loadChannels(); }
+        async function deleteChannel(id) { if (!confirm('Delete this channel?')) return; await apiFetch(`/api/channels/${id}`, { method: 'DELETE' }); showToast('Channel deleted'); loadChannels(); }
         loadChannels();
     </script>
 </body>

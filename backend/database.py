@@ -69,6 +69,27 @@ CREATE TABLE IF NOT EXISTS settings (
     value TEXT,
     description TEXT
 );
+
+CREATE TABLE IF NOT EXISTS providers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT UNIQUE NOT NULL,
+    provider_type TEXT NOT NULL,
+    api_key TEXT,
+    base_url TEXT,
+    model TEXT,
+    is_active INTEGER DEFAULT 0,
+    is_builtin INTEGER DEFAULT 0,
+    last_tested TIMESTAMP,
+    test_status TEXT DEFAULT 'untested',
+    test_message TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT OR IGNORE INTO providers (name, provider_type, model, is_active, is_builtin) VALUES
+    ('OpenAI', 'llm', 'gpt-4o-mini', 1, 1),
+    ('Gemini', 'llm', 'gemini-2.5-flash', 0, 1),
+    ('MuAPI', 'processing', 'default', 0, 1),
+    ('faster-whisper (Local)', 'transcription', 'base', 0, 1);
 """
 
 

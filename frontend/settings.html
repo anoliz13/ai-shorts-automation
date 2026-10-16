@@ -3,41 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Settings - AI Shorts Automation</title>
+    <title>Settings — AI Shorts Automation</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <div class="layout">
         <aside class="sidebar">
-            <div class="logo">AI Shorts</div>
+            <div class="logo">AI<span>Shorts</span></div>
             <nav>
-                <a href="/">Dashboard</a>
-                <a href="/channels.html">Channels</a>
-                <a href="/videos.html">Videos</a>
-                <a href="/shorts.html">Shorts</a>
-                <a href="/uploads.html">Uploads</a>
-                <a href="/settings.html" class="active">Settings</a>
+                <a href="/"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>Dashboard</a>
+                <a href="/channels.html"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>Channels</a>
+                <a href="/videos.html"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>Videos</a>
+                <a href="/shorts.html"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>Shorts</a>
+                <a href="/uploads.html"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>Uploads</a>
+                <a href="/providers.html"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Providers</a>
+                <a href="/settings.html" class="active"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>Settings</a>
             </nav>
         </aside>
         <main class="main-content">
-            <h1 style="margin-bottom: 24px;">Settings</h1>
-
+            <h1>Settings</h1>
             <div class="card">
                 <h3>Schedule</h3>
                 <form onsubmit="saveSettings(event)">
-                    <div class="form-group">
-                        <label>Check Hour (0-23)</label>
-                        <input type="number" id="check_hour" min="0" max="23" value="20">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Check Hour (0-23)</label>
+                            <input type="number" id="check_hour" min="0" max="23" value="20">
+                        </div>
+                        <div class="form-group">
+                            <label>Check Minute (0-59)</label>
+                            <input type="number" id="check_minute" min="0" max="59" value="0">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>Check Minute (0-59)</label>
-                        <input type="number" id="check_minute" min="0" max="59" value="0">
-                    </div>
-                    <h3 style="margin-top: 20px;">Anti-Spam Limits</h3>
-                    <div class="form-group">
-                        <label>Max Shorts per Video</label>
-                        <input type="number" id="max_shorts_per_video" min="1" max="10" value="5">
-                    </div>
+            </div>
+            <div class="card">
+                <h3>Anti-Spam Limits</h3>
+                <div class="form-group">
+                    <label>Max Shorts per Video</label>
+                    <input type="number" id="max_shorts_per_video" min="1" max="10" value="5">
+                </div>
+                <div class="form-row">
                     <div class="form-group">
                         <label>Max TikTok Uploads/Day</label>
                         <input type="number" id="max_uploads_per_day_tiktok" min="1" max="20" value="5">
@@ -46,56 +51,53 @@
                         <label>Max YouTube Uploads/Day</label>
                         <input type="number" id="max_uploads_per_day_youtube" min="1" max="20" value="5">
                     </div>
-                    <div class="form-group">
-                        <label>Min Gap Between Uploads (minutes)</label>
-                        <input type="number" id="min_gap_minutes" min="5" max="120" value="30">
-                    </div>
-                    <h3 style="margin-top: 20px;">Generation</h3>
-                    <div class="form-group">
-                        <label>Shorts Mode</label>
-                        <select id="shorts_mode">
-                            <option value="api">API (MuAPI - fast, requires key)</option>
-                            <option value="local">Local (offline, requires ffmpeg)</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Save Settings</button>
-                </form>
+                </div>
+                <div class="form-group">
+                    <label>Min Gap Between Uploads (minutes)</label>
+                    <input type="number" id="min_gap_minutes" min="5" max="120" value="30">
+                </div>
             </div>
+            <div class="card">
+                <h3>Generation</h3>
+                <div class="form-group">
+                    <label>Shorts Mode</label>
+                    <select id="shorts_mode">
+                        <option value="api">API (MuAPI - fast, requires key)</option>
+                        <option value="local">Local (offline, requires ffmpeg)</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="margin-top:16px;">Save Settings</button>
+            </form>
         </main>
     </div>
     <script src="/js/app.js"></script>
     <script>
         async function loadSettings() {
-            const settings = await apiFetch('/api/settings');
-            if (Object.keys(settings).length > 0) {
-                document.getElementById('check_hour').value = settings.check_hour || 20;
-                document.getElementById('check_minute').value = settings.check_minute || 0;
-                document.getElementById('max_shorts_per_video').value = settings.max_shorts_per_video || 5;
-                document.getElementById('max_uploads_per_day_tiktok').value = settings.max_uploads_per_day_tiktok || 5;
-                document.getElementById('max_uploads_per_day_youtube').value = settings.max_uploads_per_day_youtube || 5;
-                document.getElementById('min_gap_minutes').value = settings.min_gap_minutes || 30;
-                document.getElementById('shorts_mode').value = settings.shorts_mode || 'api';
+            const s = await apiFetch('/api/settings');
+            if (Object.keys(s).length) {
+                document.getElementById('check_hour').value = s.check_hour || 20;
+                document.getElementById('check_minute').value = s.check_minute || 0;
+                document.getElementById('max_shorts_per_video').value = s.max_shorts_per_video || 5;
+                document.getElementById('max_uploads_per_day_tiktok').value = s.max_uploads_per_day_tiktok || 5;
+                document.getElementById('max_uploads_per_day_youtube').value = s.max_uploads_per_day_youtube || 5;
+                document.getElementById('min_gap_minutes').value = s.min_gap_minutes || 30;
+                document.getElementById('shorts_mode').value = s.shorts_mode || 'api';
             }
         }
-
         async function saveSettings(e) {
             e.preventDefault();
-            const body = {
-                check_hour: parseInt(document.getElementById('check_hour').value),
-                check_minute: parseInt(document.getElementById('check_minute').value),
-                max_shorts_per_video: parseInt(document.getElementById('max_shorts_per_video').value),
-                max_uploads_per_day_tiktok: parseInt(document.getElementById('max_uploads_per_day_tiktok').value),
-                max_uploads_per_day_youtube: parseInt(document.getElementById('max_uploads_per_day_youtube').value),
-                min_gap_minutes: parseInt(document.getElementById('min_gap_minutes').value),
+            await apiFetch('/api/settings', { method: 'PUT', body: JSON.stringify({
+                check_hour: +document.getElementById('check_hour').value,
+                check_minute: +document.getElementById('check_minute').value,
+                max_shorts_per_video: +document.getElementById('max_shorts_per_video').value,
+                max_uploads_per_day_tiktok: +document.getElementById('max_uploads_per_day_tiktok').value,
+                max_uploads_per_day_youtube: +document.getElementById('max_uploads_per_day_youtube').value,
+                min_gap_minutes: +document.getElementById('min_gap_minutes').value,
                 shorts_mode: document.getElementById('shorts_mode').value,
-            };
-            await apiFetch('/api/settings', {
-                method: 'PUT',
-                body: JSON.stringify(body)
-            });
+            })});
             showToast('Settings saved');
         }
-
         loadSettings();
     </script>
 </body>

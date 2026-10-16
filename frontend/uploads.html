@@ -3,40 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uploads - AI Shorts Automation</title>
+    <title>Uploads — AI Shorts Automation</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <div class="layout">
         <aside class="sidebar">
-            <div class="logo">AI Shorts</div>
+            <div class="logo">AI<span>Shorts</span></div>
             <nav>
-                <a href="/">Dashboard</a>
-                <a href="/channels.html">Channels</a>
-                <a href="/videos.html">Videos</a>
-                <a href="/shorts.html">Shorts</a>
-                <a href="/uploads.html" class="active">Uploads</a>
-                <a href="/settings.html">Settings</a>
+                <a href="/"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>Dashboard</a>
+                <a href="/channels.html"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>Channels</a>
+                <a href="/videos.html"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>Videos</a>
+                <a href="/shorts.html"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>Shorts</a>
+                <a href="/uploads.html" class="active"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>Uploads</a>
+                <a href="/providers.html"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Providers</a>
+                <a href="/settings.html"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>Settings</a>
             </nav>
         </aside>
         <main class="main-content">
-            <h1 style="margin-bottom: 24px;">Uploads</h1>
-
+            <h1>Uploads</h1>
             <div class="card">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Short</th>
-                            <th>Platform</th>
-                            <th>Status</th>
-                            <th>Uploaded At</th>
-                            <th>Error</th>
-                        </tr>
-                    </thead>
-                    <tbody id="uploads-tbody">
-                        <tr><td colspan="5" style="text-align:center;color:var(--text-muted);">Loading...</td></tr>
-                    </tbody>
-                </table>
+                <div class="table-container">
+                    <table>
+                        <thead><tr><th>Short</th><th>Platform</th><th>Status</th><th>Uploaded At</th><th>Error</th></tr></thead>
+                        <tbody id="uploads-tbody">
+                            <tr><td colspan="5" style="text-align:center;color:var(--text-muted);">No uploads yet</td></tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </main>
     </div>
@@ -45,21 +39,20 @@
         async function loadUploads() {
             const uploads = await apiFetch('/api/uploads');
             const tbody = document.getElementById('uploads-tbody');
-            if (uploads.length === 0) {
+            if (!uploads.length) {
                 tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);">No uploads yet</td></tr>';
                 return;
             }
             tbody.innerHTML = uploads.map(u => `
                 <tr>
-                    <td>${u.short_title || 'Untitled'}</td>
-                    <td><strong>${u.platform}</strong></td>
-                    <td>${statusBadge(u.status)}</td>
+                    <td style="color:var(--text-primary);font-weight:500;">${u.short_title || 'Untitled'}</td>
+                    <td><strong style="color:var(--text-secondary);text-transform:capitalize;">${u.platform}</strong></td>
+                    <td><span class="badge badge-${u.status === 'done' ? 'green' : u.status === 'failed' ? 'red' : 'yellow'}">${u.status}</span></td>
                     <td>${formatDate(u.uploaded_at)}</td>
-                    <td style="color:var(--danger); font-size:12px;">${u.error_message || '—'}</td>
+                    <td style="font-size:12px;color:var(--danger);">${u.error_message || '—'}</td>
                 </tr>
             `).join('');
         }
-
         loadUploads();
     </script>
 </body>

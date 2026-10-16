@@ -13,6 +13,7 @@ from backend.api.shorts import router as shorts_router
 from backend.api.uploads import router as uploads_router
 from backend.api.settings_api import router as settings_router
 from backend.api.dashboard import router as dashboard_router
+from backend.api.providers import router as providers_router
 
 
 @asynccontextmanager
@@ -57,6 +58,7 @@ app.include_router(shorts_router, prefix="/api", tags=["shorts"])
 app.include_router(uploads_router, prefix="/api", tags=["uploads"])
 app.include_router(settings_router, prefix="/api", tags=["settings"])
 app.include_router(dashboard_router, prefix="/api", tags=["dashboard"])
+app.include_router(providers_router, prefix="/api", tags=["providers"])
 
 
 @app.post("/api/pipeline/run-now")

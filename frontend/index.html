@@ -3,61 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - AI Shorts Automation</title>
+    <title>Dashboard — AI Shorts Automation</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <div class="layout">
         <aside class="sidebar">
-            <div class="logo">AI Shorts</div>
+            <div class="logo">AI<span>Shorts</span></div>
             <nav>
-                <a href="/" class="active">Dashboard</a>
-                <a href="/channels.html">Channels</a>
-                <a href="/videos.html">Videos</a>
-                <a href="/shorts.html">Shorts</a>
-                <a href="/uploads.html">Uploads</a>
-                <a href="/settings.html">Settings</a>
+                <a href="/" class="active">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                    Dashboard
+                </a>
+                <a href="/channels.html">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    Channels
+                </a>
+                <a href="/videos.html">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    Videos
+                </a>
+                <a href="/shorts.html">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    Shorts
+                </a>
+                <a href="/uploads.html">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                    Uploads
+                </a>
+                <a href="/providers.html">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    Providers
+                </a>
+                <a href="/settings.html">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    Settings
+                </a>
             </nav>
         </aside>
         <main class="main-content">
-            <h1 style="margin-bottom: 24px;">Dashboard</h1>
-
+            <h1>Dashboard</h1>
             <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="value" id="stat-channels">—</div>
-                    <div class="label">Channels</div>
-                </div>
-                <div class="stat-card">
-                    <div class="value" id="stat-videos">—</div>
-                    <div class="label">Videos</div>
-                </div>
-                <div class="stat-card">
-                    <div class="value" id="stat-shorts">—</div>
-                    <div class="label">Shorts Generated</div>
-                </div>
-                <div class="stat-card">
-                    <div class="value" id="stat-uploads">—</div>
-                    <div class="label">Uploads Today</div>
-                </div>
+                <div class="stat-card"><div class="value" id="stat-channels">0</div><div class="label">Channels</div></div>
+                <div class="stat-card"><div class="value" id="stat-videos">0</div><div class="label">Videos</div></div>
+                <div class="stat-card"><div class="value" id="stat-shorts">0</div><div class="label">Shorts Generated</div></div>
+                <div class="stat-card"><div class="value" id="stat-uploads">0</div><div class="label">Uploads Today</div></div>
             </div>
-
             <div class="card">
                 <h3>Upload Usage Today</h3>
-                <div id="daily-usage">
-                    <p style="color: var(--text-muted);">Loading...</p>
+                <div id="daily-usage"></div>
+            </div>
+            <div class="card">
+                <h3>Quick Actions</h3>
+                <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                    <button class="btn btn-primary" onclick="runPipelineNow()">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Run Pipeline Now
+                    </button>
+                    <button class="btn btn-secondary" onclick="loadDashboard()">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                        Refresh
+                    </button>
                 </div>
             </div>
-
-            <div class="card">
-                <h3>Actions</h3>
-                <button class="btn btn-primary" onclick="runPipelineNow()">Run Pipeline Now</button>
-                <button class="btn btn-secondary" onclick="loadDashboard()">Refresh</button>
-            </div>
-
             <div class="card">
                 <h3>System Status</h3>
-                <p><strong>Last Check:</strong> <span id="last-check">—</span></p>
-                <p><strong>Scheduler:</strong> <span id="scheduler-status" class="badge badge-gray">Unknown</span></p>
+                <p style="margin-bottom:8px;"><strong style="color:var(--text-secondary);">Last Check:</strong> <span id="last-check">—</span></p>
+                <p><strong style="color:var(--text-secondary);">Scheduler:</strong> <span class="badge badge-green"><span class="dot"></span>Running — daily at 20:00</span></p>
             </div>
         </main>
     </div>
@@ -70,29 +82,22 @@
             document.getElementById('stat-shorts').textContent = stats.total_shorts;
             document.getElementById('stat-uploads').textContent = stats.uploads_today;
             document.getElementById('last-check').textContent = formatDate(stats.last_check);
-
-            // Load daily usage
             const usage = await apiFetch('/api/uploads/daily-usage');
-            const container = document.getElementById('daily-usage');
+            const c = document.getElementById('daily-usage');
             let html = '';
-            for (const [platform, data] of Object.entries(usage)) {
-                const pct = data.limit > 0 ? (data.used / data.limit) * 100 : 0;
-                html += `<p style="margin-bottom: 8px;"><strong>${platform}</strong>: ${data.used}/${data.limit}</p>
-                         <div class="progress-bar"><div class="fill" style="width: ${pct}%"></div></div>`;
+            for (const [p, d] of Object.entries(usage)) {
+                const pct = d.limit > 0 ? (d.used / d.limit) * 100 : 0;
+                html += `<div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:13px;font-weight:500;color:var(--text-secondary);text-transform:capitalize;">${p}</span><span style="font-size:12px;color:var(--text-muted);">${d.used}/${d.limit}</span></div><div class="progress-bar"><div class="fill" style="width:${pct}%"></div></div></div>`;
             }
-            container.innerHTML = html || '<p style="color: var(--text-muted);">No uploads today</p>';
+            c.innerHTML = html || '<p style="color:var(--text-muted);font-size:14px;">No uploads today</p>';
         }
-
         async function runPipelineNow() {
             try {
-                const result = await apiFetch('/api/pipeline/run-now', { method: 'POST' });
-                showToast(`Pipeline complete: ${result.monitor.new_videos} new videos, ${result.generator.shorts_generated} shorts, ${result.uploader.uploaded} uploads`);
+                const r = await apiFetch('/api/pipeline/run-now', { method: 'POST' });
+                showToast(`Done: ${r.monitor.new_videos} new videos, ${r.generator.shorts_generated} shorts, ${r.uploader.uploaded} uploads`);
                 loadDashboard();
-            } catch (e) {
-                showToast('Pipeline failed: ' + e.message, 'error');
-            }
+            } catch(e) { showToast('Pipeline failed: ' + e.message, 'error'); }
         }
-
         loadDashboard();
     </script>
 </body>
